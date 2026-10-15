@@ -71,6 +71,11 @@ def style(fig, height=320, legend=True):
     return fig
 
 
+def season_axis(fig):
+    fig.update_xaxes(type="category", categoryorder="array", categoryarray=seasons)
+    return fig
+
+
 def wilson(k, n, z=1.96):
     if n == 0:
         return 0, 0, 0
@@ -211,7 +216,7 @@ with tab_over:
                 customdata=g["n"], hovertemplate="%{x}<br>%{y:.1f}% chased wins<br>n=%{customdata}<extra></extra>"))
             fig.add_hline(y=50, line_dash="dash", line_color=GREY)
             fig.update_yaxes(title="Chasing win %", range=[0, 100])
-            st.plotly_chart(style(fig, 400, False), use_container_width=True)
+            st.plotly_chart(season_axis(style(fig, 400, False)), use_container_width=True)
 
     st.write("")
     a, b = st.columns(2)
@@ -231,7 +236,7 @@ with tab_over:
             fig = go.Figure([go.Bar(x=g["season"], y=g["runs"], name="Won by runs", marker_color=BLUE),
                              go.Bar(x=g["season"], y=g["wk"], name="Won by wickets", marker_color=ORANGE)])
             fig.update_layout(barmode="stack")
-            st.plotly_chart(style(fig), use_container_width=True)
+            st.plotly_chart(season_axis(style(fig)), use_container_width=True)
 
     # --- Toss decision ---
     with b.container(border=True):
@@ -252,7 +257,7 @@ with tab_over:
                 if col in g:
                     fig.add_bar(x=g["season"], y=g[col], name=col.capitalize(), marker_color=colr)
             fig.update_layout(barmode="stack")
-            st.plotly_chart(style(fig), use_container_width=True)
+            st.plotly_chart(season_axis(style(fig)), use_container_width=True)
 
     st.write("")
     a, b = st.columns(2)
